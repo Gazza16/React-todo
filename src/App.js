@@ -7,8 +7,11 @@ import { Input, Message, Delete } from 'reactbulma'
 
 class App extends Component {
   state = {
-    tasks: ['Do the washing', 'Walk the dog'],
+    tasks: [ 
+    {job:'Do the washing', dateTime: new Date()}
+    ],
     searchPhrase: ''
+  
   }
 
   onChangeQuery = (event) => {
@@ -21,11 +24,12 @@ class App extends Component {
     event.preventDefault();
 
    const currentTasks = [...this.state.tasks]
+   const existingTask = this.state.tasks.find((task) => task.job === this.state.searchPhrase )
    if (this.state.searchPhrase !== '' && 
-    !this.state.tasks.includes(this.state.searchPhrase)) { 
+    !existingTask) { 
 
    //add new task to our copy of tasks
-   currentTasks.unshift(this.state.searchPhrase)
+   currentTasks.unshift({job: this.state.searchPhrase, dateTime: new Date()})
 
    //update the state with the new tasks
    this.setState({
@@ -52,12 +56,15 @@ class App extends Component {
 
         {
           tasks
-          .filter(myTask => myTask.includes(searchPhrase)).map(myTask => (
+          // .filter(myTask => myTask.includes(searchPhrase))
+          .map(myTask => (
 
             <Message>
               <Message.Header>
-                <p>{ myTask }</p>
+                <p>{ myTask.job }</p>
+                <p>{myTask.dateTime.toLocalString()}</p>
                  <Delete/>
+                }
               </Message.Header>
             </Message>
               ))
